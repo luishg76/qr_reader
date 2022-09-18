@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qr_reader/screens/home_screen.dart';
+import 'package:qr_reader/screens/map_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +14,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'QRReader',
       theme: ThemeData(       
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(body: Text('Hola Mundo')),
+      initialRoute: 'home',
+      routes: {
+        'home':(context) => HomeScreen(),
+        'map':(context) => MapScreen(),
+      },
+      home: HomeScreen(),
     );
   }
 }
