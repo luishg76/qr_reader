@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_reader/providers/ui_provider.dart';
 import 'package:qr_reader/screens/home_screen.dart';
 import 'package:qr_reader/screens/map_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(AppStateWidget());
+}
+class AppStateWidget extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+     return MultiProvider(providers: [
+             ChangeNotifierProvider(create: (_)=>UIProvider(), lazy: true),
+          ],
+          child: const MyApp(),
+        );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -15,8 +28,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'QRReader',
-      theme: ThemeData(       
-        primarySwatch: Colors.blue,
+      theme: ThemeData(  
+        //primaryColor: Colors.blue,   
+        primarySwatch: Colors.deepPurple,        
+
       ),
       initialRoute: 'home',
       routes: {
@@ -24,6 +39,7 @@ class MyApp extends StatelessWidget {
         'map':(context) => MapScreen(),
       },
       home: HomeScreen(),
+      
     );
   }
 }
