@@ -16,10 +16,10 @@ class ScanModel {
       required this.tipo,
       required this.valor,      
     }){
-      if(valor.contains("http"))
-        tipo="http";
-      else if(valor.contains("GEO"))
-        tipo="geo"; 
+      if(this.valor.contains("http"))
+        this.tipo="http";
+      else if(this.valor.contains("GEO"))
+        this.tipo="geo"; 
     }
 
     int id;
