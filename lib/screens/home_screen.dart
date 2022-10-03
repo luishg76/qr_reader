@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_reader/models/scan_model.dart';
+import 'package:qr_reader/providers/db_provider.dart';
 import 'package:qr_reader/providers/qr_provider.dart';
 import 'package:qr_reader/providers/ui_provider.dart';
 import 'package:qr_reader/widgets/directions_partial.dart';
@@ -14,6 +16,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      final uiprovider=Provider.of<UIProvider>(context);
+     final qrprovider=Provider.of<QRProvider>(context);
+     
+     //TODO: lectura temporal a la base de datos 
+     //DBProvider.dbp.getDataBase;
+     final temp=new ScanModel(valor:'https://otro3.com');
+     //DBProvider.dbp.AddScan(temp);
+     //DBProvider.dbp.getScanById(2).then((scan)=>print(scan?.valor));
+     DBProvider.dbp.getAllScans().then((value) => {print(value) });
+     
      return Scaffold(
           appBar: AppBar(
             centerTitle:true,            
@@ -29,9 +40,11 @@ class HomeScreen extends StatelessWidget {
             floatingActionButton: FloatingActionButton(      
                 child: Icon(Icons.qr_code_scanner_outlined, size: 35),
                 onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
+                    /*Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const QRViewExample(),
-                    ));
+                    ));*/
+                    qrprovider.SetResult=ScanModel(valor:'https://ing.luishg76@gmail.com');                 
+
                 },
               ),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -168,7 +181,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                         child: ElevatedButton(
                           onPressed: () async {
                             await controller?.stopCamera(); //pauseCamera();
-                            qrprovider.SetResult=result;
+                            qrprovider.SetResult=ScanModel(valor: result!.code??'');
                             Navigator.pop(context);
                           },
                           child: const Text('Stop',
