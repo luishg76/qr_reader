@@ -82,4 +82,11 @@ class DBProvider{
               ? res.map((e) => ScanModel.fromJson(e)).toList()
               : [];
   }
+
+  Future<int> deleteAllScans()async{
+      final db=await getDataBase;
+      
+    
+
+  }
 }
