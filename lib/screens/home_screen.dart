@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
      final temp=new ScanModel(valor:'https://otro3.com');
      //DBProvider.dbp.AddScan(temp);
      //DBProvider.dbp.getScanById(2).then((scan)=>print(scan?.valor));
-     DBProvider.dbp.getAllScans().then((value) => {print(value) });
+     //DBProvider.dbp.getAllScans().then((value) => {print(value) });
      
      return Scaffold(
           appBar: AppBar(

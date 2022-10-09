@@ -83,10 +83,9 @@ class DBProvider{
               : [];
   }
 
-  Future<int> deleteAllScans()async{
-      final db=await getDataBase;
-      
+  // Future<int> deleteAllScans()async{
+  //     final db=await getDataBase;      
     
 
-  }
+  // }
 }
