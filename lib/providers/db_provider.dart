@@ -1,9 +1,9 @@
 import 'dart:io';
-
 import 'package:path_provider/path_provider.dart';
-import 'package:qr_reader/models/scan_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import '../models/scan_model.dart';
 
 class DBProvider{
   static Database? _database;
@@ -20,7 +20,7 @@ class DBProvider{
       _database=await initDB();
     return _database;  
   }
-  
+
   Future<Database?> initDB() async{
     //Crear el directorio
     Directory	docDirectory=await getApplicationDocumentsDirectory();
@@ -29,31 +29,26 @@ class DBProvider{
     //Crear Base de datos
     return await openDatabase(
       path,
-      version: 3,
+      version: 8,
       onOpen: (db){},
-      onCreate: (db, version){
-        db.execute("""
-                  CREATE TABLE Scans(
-                    id INTERGER PRIMARY KEY,
-                    tipo TEXT,
-                    valor TEXT                    
-                  )
-                  """);
+      onCreate: (Database db,int version) async {
+        await db.execute('''CREATE TABLE Scans (
+                            id	INTEGER NOT NULL,
+                            tipo TEXT,
+                            valor TEXT,
+                            PRIMARY KEY(id AUTOINCREMENT))''');
       },
-    ); 
+    );
   }
 
   Future<int> AddScanRaw(ScanModel newscan)async{
     final db=await getDataBase;
     int res=0;
-    //final {id,tipo,valor}=newscan; Destructuración no soportada en Dart
-    final id=newscan.id;
+    //final {id,tipo,valor}=newscan; Destructuración no soportada en Dart    
     final tipo=newscan.tipo;
     final valor=newscan.valor;
     if(db!=null)
-       res=await db.rawInsert('''INSERT INTO 
-                                 Scans(id,tipo,valor) 
-                                 VALUE($id,"$tipo","$valor"})''');
+       res=await db.rawInsert('INSERT INTO Scans(tipo,valor) VALUES("$tipo","$valor")');
     return res;
   }
 
@@ -83,9 +78,9 @@ class DBProvider{
               : [];
   }
 
-  // Future<int> deleteAllScans()async{
-  //     final db=await getDataBase;      
-    
-
-  // }
+  Future<int> deleteAllScans()async{
+       final db=await getDataBase;
+       final res=await db!.delete('Scans');
+       return res;
+  }
 }

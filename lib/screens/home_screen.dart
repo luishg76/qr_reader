@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_reader/models/scan_model.dart';
-import 'package:qr_reader/providers/db_provider.dart';
-import 'package:qr_reader/providers/qr_provider.dart';
 import 'package:qr_reader/providers/ui_provider.dart';
 import 'package:qr_reader/widgets/directions_partial.dart';
 import 'package:qr_reader/widgets/maps_partial.dart';
@@ -20,10 +18,11 @@ class HomeScreen extends StatelessWidget {
      
      //TODO: lectura temporal a la base de datos 
      //DBProvider.dbp.getDataBase;
-     final temp=new ScanModel(valor:'https://otro3.com');
-     //DBProvider.dbp.AddScan(temp);
+     //final temp=ScanModel(valor:'https://otro1.com');
+     //DBProvider.dbp.AddScanRaw(temp);
      //DBProvider.dbp.getScanById(2).then((scan)=>print(scan?.valor));
      //DBProvider.dbp.getAllScans().then((value) => {print(value) });
+     //DBProvider.dbp.deleteAllScans();
      
      return Scaffold(
           appBar: AppBar(
@@ -73,9 +72,8 @@ class _HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final uiprovider=Provider.of<UIProvider>(context);
     switch(uiprovider.getSelectTap){
-        case 0:return MapsWidget(); break;
-        case 1:return DirectionsWidget(); break;
-
+        case 0:return MapsWidget();
+        case 1:return DirectionsWidget();
         default:return MapsWidget();
       }
   }
