@@ -8,6 +8,8 @@ import 'package:qr_reader/widgets/directions_partial.dart';
 import 'package:qr_reader/widgets/maps_partial.dart';
 import 'package:flutter/foundation.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+//import '../providers/db_provider.dart';
+import '../providers/qr_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   
@@ -18,9 +20,9 @@ class HomeScreen extends StatelessWidget {
      
      //TODO: lectura temporal a la base de datos 
      //DBProvider.dbp.getDataBase;
-     //final temp=ScanModel(valor:'https://otro1.com');
-     //DBProvider.dbp.AddScanRaw(temp);
-     //DBProvider.dbp.getScanById(2).then((scan)=>print(scan?.valor));
+     //final temp=ScanModel(valor:'https://otro4.com');
+     //DBProvider.dbp.AddScan(temp);     
+     //DBProvider.dbp.getScanById(4).then((scan)=>print(scan?.valor));
      //DBProvider.dbp.getAllScans().then((value) => {print(value) });
      //DBProvider.dbp.deleteAllScans();
      
@@ -42,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                     /*Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const QRViewExample(),
                     ));*/
-                    qrprovider.SetResult=ScanModel(valor:'https://ing.luishg76@gmail.com');                 
+                    qrprovider.setResult=ScanModel(valor:'https://ing.luishg76@gmail.com');                 
 
                 },
               ),
@@ -50,7 +52,7 @@ class HomeScreen extends StatelessWidget {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: uiprovider.getSelectTap,
               elevation: 0,
-              items: [
+              items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.map,size: 35,),
                   label: 'Mapa'),
@@ -179,7 +181,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                         child: ElevatedButton(
                           onPressed: () async {
                             await controller?.stopCamera(); //pauseCamera();
-                            qrprovider.SetResult=ScanModel(valor: result!.code??'');
+                            qrprovider.setResult=ScanModel(valor: result!.code??'');
                             Navigator.pop(context);
                           },
                           child: const Text('Stop',

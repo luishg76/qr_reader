@@ -10,7 +10,7 @@ class DirectionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final qrprovider=Provider.of<QRProvider>(context);
      return Center(
-        child: Text('Directions Partial ${qrprovider.GetCode}'),
+        child: Text('Directions Partial ${qrprovider.getCode}'),
        );
   }
 }

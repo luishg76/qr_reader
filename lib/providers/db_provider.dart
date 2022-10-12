@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+// ignore: depend_on_referenced_packages
+import 'package:path/path.dart' as p;
 
 import '../models/scan_model.dart';
 
@@ -16,16 +17,15 @@ class DBProvider{
 
   //Acceso a la base de datos
   Future<Database?> get getDataBase async{
-    if(_database==null)
-      _database=await initDB();
+    //if(_database==null)
+    _database ?? await initDB();
     return _database;  
   }
 
   Future<Database?> initDB() async{
     //Crear el directorio
     Directory	docDirectory=await getApplicationDocumentsDirectory();
-    final path=join(docDirectory.path,'ScansDB.db');
-    print(path);
+    final path=p.join(docDirectory.path,'ScansDB.db');    
     //Crear Base de datos
     return await openDatabase(
       path,
@@ -41,41 +41,48 @@ class DBProvider{
     );
   }
 
-  Future<int> AddScanRaw(ScanModel newscan)async{
+  Future<int> addScanRaw(ScanModel newscan)async{
     final db=await getDataBase;
     int res=0;
     //final {id,tipo,valor}=newscan; Destructuración no soportada en Dart    
     final tipo=newscan.tipo;
     final valor=newscan.valor;
-    if(db!=null)
-       res=await db.rawInsert('INSERT INTO Scans(tipo,valor) VALUES("$tipo","$valor")');
+    res=await db!.rawInsert('INSERT INTO Scans(tipo,valor) VALUES("$tipo","$valor")');    
     return res;
   }
 
-  Future<int> AddScan(ScanModel newscan)async
+  Future<int> addScan(ScanModel newscan)async
   {
     final db=await getDataBase;
     int res=0;
-    if(db!=null)
-       res=await db.insert('Scans', newscan.toJson());
-    print(res);
+    res=await db!.insert('Scans', newscan.toJson());   
     return res;
+  }
+
+  Future<int> updateScan(ScanModel scan) async{
+     final db=await getDataBase;
+     final res=await db!.update('Scans', scan.toJson(), where: 'id=?',whereArgs: [scan.id]);
+     return res;
   }
 
   Future<ScanModel?> getScanById(int pid) async
   {
      final db=await getDataBase;
-     final res=await db?.query('Scans',where: 'id=?', whereArgs: [pid]);
-
-     return res!.isNotEmpty?ScanModel.fromJson(res.first):null;
+     final res=await db!.query('Scans',where: 'id=?', whereArgs: [pid]);
+     return res.isNotEmpty ? ScanModel.fromJson(res.first): null;
   }
 
   Future<List<ScanModel?>> getAllScans()async {
       final db=await getDataBase;
       final res=await db!.query('Scans');
-       return res.isNotEmpty
-              ? res.map((e) => ScanModel.fromJson(e)).toList()
-              : [];
+       return res.isNotEmpty ? res.map((e) => ScanModel.fromJson(e)).toList() : [];
+  }
+
+  Future<int> deleteScansById(int id)async
+  {
+     final db=await getDataBase;
+     final res=await db!.delete('Scans', where: 'id=?', whereArgs:[id]);
+     return res;    
   }
 
   Future<int> deleteAllScans()async{
