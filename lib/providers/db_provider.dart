@@ -72,6 +72,14 @@ class DBProvider{
      return res.isNotEmpty ? ScanModel.fromJson(res.first): null;
   }
 
+  Future<List<ScanModel?>> getSansByTipo(String tipo)async
+  {
+    final db=await getDataBase;
+     final res=await db!.query('Scans',where: 'tipo=?', whereArgs: [tipo]);
+     return res.isNotEmpty? res.map((e) => ScanModel.fromJson(e)).toList():[];
+     
+  }
+
   Future<List<ScanModel?>> getAllScans()async {
       final db=await getDataBase;
       final res=await db!.query('Scans');

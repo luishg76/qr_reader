@@ -4,7 +4,7 @@ import 'package:qr_reader/providers/db_provider.dart';
 
 
 class ScanListProvider extends ChangeNotifier {
-    List<ScanModel> listScans=[];
+    List<ScanModel?> listScans=[];
     String tipoSelect='http';
 
     //Add a new scam in the list and data base
@@ -17,4 +17,24 @@ class ScanListProvider extends ChangeNotifier {
         notifyListeners();
       }
     }
+
+    carryScanByTipo(String tipo)async {
+      final scans=await DBProvider.dbp.getSansByTipo(tipo);
+      tipoSelect=tipo;
+      listScans=[...scans];
+      notifyListeners();
+    }
+
+    deleteAllScans()async{
+      await DBProvider.dbp.deleteAllScans();
+      listScans=[]; 
+      notifyListeners();
+    }
+
+    deleteScansById(int id)async{
+      await DBProvider.dbp.deleteScansById(id);
+      carryScanByTipo(tipoSelect);      
+    }
+
+
 }

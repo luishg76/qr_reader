@@ -9,8 +9,14 @@ class DirectionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final qrprovider=Provider.of<QRProvider>(context);
-     return Center(
-        child: Text('Directions Partial ${qrprovider.getCode}'),
-       );
+     return ListView.builder(
+      itemCount:10,
+      itemBuilder:(context,i)=> ListTile(
+        leading:Icon(Icons.compass_calibration, color:Theme.of(context).primaryColor,),
+        title: Text('http://google.com'),
+        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey,),
+        onTap: () => print('mostrar algo'),
+         ),
+    );
   }
 }
